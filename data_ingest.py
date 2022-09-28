@@ -1,16 +1,18 @@
 """Module docstring"""
-import requests
-from dotenv import load_dotenv
-import pandas as pd
 import json
 import os
 from datetime import datetime
+import pandas as pd
+import requests
+from dotenv import load_dotenv
 
 load_dotenv()
 
 api_key = os.getenv("ACLED_ACCESS_KEY")
 username = os.getenv("ACLED_USERNAME")
 today = datetime.today().strftime("%Y-%m-%d")
+
+aol_key = "aol_key"
 
 
 def pull_data():
@@ -57,7 +59,8 @@ def pull_data():
     )
     for date in date_list:
         response = requests.get(
-            f"https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={date}&iso=804"
+            f"https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={date}&iso=804",
+            timeout=10,
         )
         data = response.json()
         df2 = pd.read_json(json.dumps(data["data"]))
@@ -102,5 +105,5 @@ def pull_data():
             return df
 
 
-df = pull_data()
-df
+merged_data = pull_data()
+merged_data.to_csv("./data/ukraine.csv")
