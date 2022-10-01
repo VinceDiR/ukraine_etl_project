@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
-from scripts.ingest_data import ingest_data
+from python_scripts.ingest_data import ingest_data
 
 email = os.getenv("EMAIL_ADDRESS")
 
