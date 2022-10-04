@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
-from python_scripts.ingest_data import ingest_data
+from airflow.providers.amazon.aws.operators.glue_crawler import GlueCrawlerOperator
+from scripts.ingest_data import ingest_data
 
 email = os.getenv("EMAIL_ADDRESS")
 
@@ -30,7 +31,16 @@ with DAG(
         op_args={" {{ data_interval_start.int_timestamp }} "},
         dag=dag,
     )
+    glue_crawler_config = {
+        'Name': 'acled-crawler',
+    }
+
+    crawler_task = GlueCrawlerOperator(
+        task_id = "acled_crawler_task",
+        config = glue_crawler_config,
+        dag=dag,
+    )
 
     end_task = EmptyOperator(task_id="acled_end_task", dag=dag)
 
-    start_task >> ingest_task >> end_task
+    start_task >> ingest_task >> crawler_task >> end_task
