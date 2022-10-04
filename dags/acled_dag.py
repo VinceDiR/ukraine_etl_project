@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.amazon.aws.operators.glue_crawler import GlueCrawlerOperator
-from scripts.ingest_data import ingest_data
+from pyspark_script.ingest_data import ingest_data
 
 email = os.getenv("EMAIL_ADDRESS")
 
