@@ -31,4 +31,4 @@ def get_daily_data(date):
 date_choice = st.selectbox("Choose Date", [strftime("%Y-%m-%d", d.timetuple()) for d in date_range(start="2022-02-24", end=datetime.today())])
 
 if st.button("Generate Table"):
-    st.dataframe(get_daily_data(date_choice))
+    st.dataframe(get_daily_data(date_choice), use_container_width=True)
