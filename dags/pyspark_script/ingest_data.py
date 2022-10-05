@@ -6,11 +6,10 @@ from pyspark import SparkConf
 from pyspark.sql import functions as F
 from pyspark.sql.types import StructType
 import requests
-from dotenv import load_dotenv
+
 
 def ingest_data(date):
     """Ingest ACLED data for a given date"""
-    load_dotenv()
 
     aws_access_key = os.getenv("AWS_ACCESS_KEY")
     aws_secret_key = os.getenv("AWS_SECRET_KEY")

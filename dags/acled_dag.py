@@ -28,7 +28,7 @@ with DAG(
     ingest_task = PythonOperator(
         task_id="acled_ingest_task",
         python_callable=ingest_data,
-        op_args={" {{ data_interval_start.int_timestamp }} "},
+        op_args={"{{data_interval_start.int_timestamp}}"},
         dag=dag,
     )
     glue_crawler_config = {

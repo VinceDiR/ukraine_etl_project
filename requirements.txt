@@ -1,10 +1,6 @@
-airflow==0.6
-altair==4.2.0
-apache_airflow_providers_ftp==3.1.0
+apache-airflow==2.4.1
 pandas==1.5.0
 pyathena==2.14.0
 pyspark==3.3.0
-python-dotenv==0.21.0
 requests==2.28.1
-scripts==2.0
 streamlit==1.13.0
