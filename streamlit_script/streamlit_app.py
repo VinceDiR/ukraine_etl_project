@@ -47,4 +47,5 @@ with col[0]:
     if st.button("Generate Table"):
         df = get_daily_data(date_choice)
         st.dataframe(df)
+        st.table(df[df['notes']])
         st.map(data=df[["latitude", "longitude"]], zoom=5)
