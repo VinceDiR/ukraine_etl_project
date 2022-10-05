@@ -2,8 +2,6 @@
 
 ## **Statement of Purpose** ##
 
-****
-
 This project's purpose is to collect and aggregate event-level data from the ongoing conflict in Ukraine on a daily basis. 
 
 I have created a basic Python script using the Requests package and PySpark to ingest, clean, and upload the data to AWS S3. I have also created an AWS Glue Crawler that is triggered on the uploaded parquet files to read them into an AWS Athena table. I've created an Airflow DAG to execute this script and crawler daily at midnight.
