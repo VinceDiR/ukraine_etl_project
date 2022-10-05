@@ -47,4 +47,4 @@ with col[0]:
     if st.button("Generate Table"):
         df = get_daily_data(date_choice)
         st.dataframe(df)
-        st.map(data=df[["latitude", "longitude"]])
+        st.map(data=df[["latitude", "longitude"]], zoom=4)
