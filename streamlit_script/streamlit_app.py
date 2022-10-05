@@ -22,8 +22,8 @@ def get_daily_data(date):
     athena = connect(
         s3_staging_dir=f"s3://{acled_bucket}/tmp/",
         region_name=f"{aws_region}",
-        aws_access_key=f"{aws_access_key}",
-        aws_secret_key=f"{aws_secret_key}",
+        aws_access_key_id=f"{aws_access_key}",
+        aws_secret_access_key=f"{aws_secret_key}",
         cursor_class=PandasCursor,
     ).cursor()
     return athena.execute(f"""SELECT * FROM {acled_db}.{acled_table} WHERE event_date LIKE '{date}'""").as_pandas()
