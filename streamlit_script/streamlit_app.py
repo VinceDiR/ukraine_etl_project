@@ -40,7 +40,12 @@ with col[0]:
         "Choose Date",
         [
             strftime("%Y-%m-%d", d.timetuple())
-            for d in date_range(start="2022-02-24", end=strftime("%Y-%m-%d", (datetime.today() - timedelta(days=8)).timetuple()))
+            for d in date_range(
+                start="2022-02-24",
+                end=strftime(
+                    "%Y-%m-%d", (datetime.today() - timedelta(days=8)).timetuple()
+                ),
+            )
         ],
     )
 
