@@ -1,6 +1,6 @@
 """Streamlit app to create ACLED data dashboards"""
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 from time import strftime
 from pandas import date_range
 import streamlit as st
@@ -40,12 +40,11 @@ with col[0]:
         "Choose Date",
         [
             strftime("%Y-%m-%d", d.timetuple())
-            for d in date_range(start="2022-02-24", end=datetime.today())
+            for d in date_range(start="2022-02-24", end=strftime("%Y-%m-%d", (datetime.today() - timedelta(days=8)).timetuple()))
         ],
     )
 
     if st.button("Generate Table"):
         df = get_daily_data(date_choice)
         st.dataframe(df)
-        st.table(df.notes)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
