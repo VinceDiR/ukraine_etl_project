@@ -16,7 +16,7 @@ The data we will be using for this project is the [ACLED Conflict Data](https://
 
 - **Requests** for accessing the ACLED API Endpoint
 
-- **PySpark** for data munging and cleaning. Also Writing data to AWS S3.
+- **PySpark** for data munging and cleaning. Also writing the data to AWS S3.
 
 - **AWS S3** for storing parquet files.
 
@@ -24,6 +24,6 @@ The data we will be using for this project is the [ACLED Conflict Data](https://
 
 - **Airflow** for orchestrating the ETL process on a daily basis.
 
-- **PyAthena** for querying the Athena data in Python.
+- **PyAthena** for querying the Athena table in Python.
 
 - **Streamlit** for building a frontend application.
