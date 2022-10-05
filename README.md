@@ -10,13 +10,9 @@ Finally, a frontend application has been built using Streamlit and Pyathena to m
 
 ### **Data Description** ###
 
-****
-
 The data we will be using for this project is the [ACLED Conflict Data](https://www.acleddata.com), which is freely available to use (with attribution) via API and Export Tool. It contains event-level data for all incidents within Ukraine since the beginning of the conflict on 24 February 2022. The data is updated weekly and contains information on the actors, location, type of event, and number of fatalities. The data is retrieved in JSON format for the date 8 days prior to a given day.
 
 ### **Tools** ###
-
-****
 
 - **Requests** for accessing the ACLED API Endpoint
 
