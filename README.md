@@ -1,4 +1,4 @@
-# **Diamond Price Predictor App using Streamlit** #
+# **War in Ukraine ETL Project** #
 
 ## **Statement of Purpose** ##
 
