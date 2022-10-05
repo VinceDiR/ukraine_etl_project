@@ -34,5 +34,6 @@ with col[0]:
     date_choice = st.selectbox("Choose Date", [strftime("%Y-%m-%d", d.timetuple()) for d in date_range(start="2022-02-24", end=datetime.today())])
 
     if st.button("Generate Table"):
-        df = st.dataframe(get_daily_data(date_choice))
-        st.map(data=df[['latitude', 'longitude']], zoom=None, use_container_width=True)
+        df = get_daily_data(date_choice)
+        st.dataframe(df)
+        st.map(data=df[['latitude', 'longitude']])
