@@ -1,6 +1,7 @@
 """"ACLED Data Ingest Function"""
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
+from time import strftime
 from pyspark.sql import SparkSession
 from pyspark import SparkConf
 from pyspark.sql import functions as F
@@ -25,12 +26,18 @@ def ingest_data(date):
     spark = SparkSession.builder.config(conf=conf).getOrCreate()
     dataframe = spark.createDataFrame([], StructType([]))
 
-    response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&timestamp={date}/{datetime.fromtimestamp(int(date)).strftime("%Y-%m-%d")}&iso=804""", timeout=30)
+    response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={strftime("%Y-%m-%d", (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=7)).timetuple())}=&iso=804""", timeout=30)
     data = response.json()['data']
     dataframe2 = spark.read.json(spark.sparkContext.parallelize([data]))
     dataframe = dataframe.unionByName(dataframe2, True)
     if dataframe.count() == 0:
         return "No data"
+    elif dataframe.count() == 500:
+        print("Max data limit reached. Calling API again.")
+        response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={strftime("%Y-%m-%d", (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=7)).timetuple())}=&iso=804&page=2""", timeout=30)
+        data = response.json()['data']
+        dataframe3 = spark.read.json(spark.sparkContext.parallelize([data]))
+        dataframe = dataframe.unionByName(dataframe3, True)
 
     dataframe = dataframe.withColumn("event_date", F.to_date("event_date", "yyyy-MM-dd"))
     dataframe = dataframe.withColumn("fatalities", dataframe["fatalities"].cast("int"))

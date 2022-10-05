@@ -5,14 +5,14 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.operators.empty import EmptyOperator
 from airflow.providers.amazon.aws.operators.glue_crawler import GlueCrawlerOperator
-from pyspark_script.ingest_data import ingest_data
+from scripts.ingest_data import ingest_data
 
 email = os.getenv("EMAIL_ADDRESS")
 
 with DAG(
     dag_id="acled_data_ingest",
-    start_date=datetime(2022, 9, 28),
-    schedule_interval="0 0 * * 3",
+    start_date=datetime(2022, 9, 30),
+    schedule_interval="@daily",
     catchup=True,
     default_args={
         "retries": 1,
@@ -28,7 +28,7 @@ with DAG(
     ingest_task = PythonOperator(
         task_id="acled_ingest_task",
         python_callable=ingest_data,
-        op_args={"{{data_interval_start.int_timestamp}}"},
+        op_args={"{{ds}}"},
         dag=dag,
     )
     glue_crawler_config = {
