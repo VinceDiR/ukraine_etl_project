@@ -48,9 +48,10 @@ with st.sidebar.title("Filter by date"):
             )
         ],
     )
+        gen_dash = st.button("Generate Dashboard")
 
 with col[0]:
-    if st.button("Generate Table"):
+    if gen_dash:
         df = get_daily_data(date_choice)
         st.write(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
