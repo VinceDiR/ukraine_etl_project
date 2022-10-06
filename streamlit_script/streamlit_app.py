@@ -35,9 +35,8 @@ def get_daily_data(date):
         f"""SELECT * FROM {acled_db}.{acled_table} WHERE event_date LIKE '{date}'"""
     ).as_pandas()
 
-
-with col[0]:
-    date_choice = st.selectbox(
+with st.sidebar.title("Filter by date"):
+        date_choice = st.selectbox(
         "Choose Date",
         [
             strftime("%Y-%m-%d", d.timetuple())
@@ -50,6 +49,7 @@ with col[0]:
         ],
     )
 
+with col[0]:
     if st.button("Generate Table"):
         df = get_daily_data(date_choice)
         st.write(df)
