@@ -54,5 +54,6 @@ with st.sidebar.title("Filter by date"):
 with col[0]:
     if gen_dash:
         df = get_daily_data(date_choice)
-        st.write(df)
+        with st.expander("Show DataFrame"):
+            st.write(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
