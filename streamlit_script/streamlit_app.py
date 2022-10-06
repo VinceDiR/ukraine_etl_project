@@ -7,7 +7,7 @@ import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
-st.set_page_config(layout="wide")
+st.set_page_config(page_title="Ukraine War Dashboard", page_icon=(":flag-ua:"), layout="wide")
 
 acled_bucket = os.getenv("S3_BUCKET")
 acled_db = os.getenv("DATABASE")
@@ -17,8 +17,9 @@ aws_region = os.getenv("AWS_REGION")
 aws_access_key = os.getenv("AWS_ACCESS_KEY")
 aws_secret_key = os.getenv("AWS_SECRET_KEY")
 
-col = st.columns(1)
+st.title("Ukraine War Dashboard")
 
+col = st.columns(1)
 
 @st.cache
 def get_daily_data(date):
@@ -51,5 +52,5 @@ with col[0]:
 
     if st.button("Generate Table"):
         df = get_daily_data(date_choice)
-        st.dataframe(df)
+        st.write(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
