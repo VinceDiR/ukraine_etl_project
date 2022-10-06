@@ -17,7 +17,7 @@ aws_region = os.getenv("AWS_REGION")
 aws_access_key = os.getenv("AWS_ACCESS_KEY")
 aws_secret_key = os.getenv("AWS_SECRET_KEY")
 
-st.title("Ukraine War Dashboard")
+st.title(":flag-ua: Ukraine War Dashboard")
 
 col = st.columns(1)
 
