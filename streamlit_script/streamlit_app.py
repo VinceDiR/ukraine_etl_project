@@ -7,7 +7,7 @@ import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
-st.set_page_config(page_title="Ukraine War Dashboard", page_icon=(":flag-ua:"), layout="wide")
+st.set_page_config(page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide")
 
 acled_bucket = os.getenv("S3_BUCKET")
 acled_db = os.getenv("DATABASE")
