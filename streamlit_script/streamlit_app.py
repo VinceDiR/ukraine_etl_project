@@ -36,6 +36,7 @@ def get_daily_data(date):
     ).as_pandas()
 
 st.sidebar.title("Filter by date")
+
 with st.sidebar:
         date_choice = st.selectbox(
         "Choose Date",
@@ -55,6 +56,6 @@ with st.sidebar:
 with col[0]:
     if gen_dash:
         df = get_daily_data(date_choice)
-        with st.expander("Show DataFrame"):
+        with st.expander("Show Raw DataFrame"):
             st.write(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
