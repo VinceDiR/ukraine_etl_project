@@ -48,7 +48,8 @@ with st.sidebar.title("Filter by date"):
             )
         ],
     )
-        gen_dash = st.button("Generate Dashboard")
+        with st.sidebar:
+            gen_dash = st.button("Generate Dashboard")
 
 with col[0]:
     if gen_dash:
