@@ -7,7 +7,9 @@ import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 
-st.set_page_config(page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide")
+st.set_page_config(
+    page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
+)
 
 acled_bucket = os.getenv("S3_BUCKET")
 acled_db = os.getenv("DATABASE")
@@ -17,9 +19,10 @@ aws_region = os.getenv("AWS_REGION")
 aws_access_key = os.getenv("AWS_ACCESS_KEY")
 aws_secret_key = os.getenv("AWS_SECRET_KEY")
 
-st.title(":flag-ua: Ukraine War Dashboard")
+st.title(":flag-ua: Tracking the Conflict in Ukraine")
 
 col = st.columns(1)
+
 
 @st.cache
 def get_daily_data(date):
@@ -35,10 +38,11 @@ def get_daily_data(date):
         f"""SELECT * FROM {acled_db}.{acled_table} WHERE event_date LIKE '{date}'"""
     ).as_pandas()
 
+
 st.sidebar.title("Filter by date")
 
 with st.sidebar:
-        date_choice = st.selectbox(
+    date_choice = st.selectbox(
         "Choose Date",
         [
             strftime("%Y-%m-%d", d.timetuple())
@@ -50,8 +54,8 @@ with st.sidebar:
             )
         ],
     )
-        with st.sidebar:
-            gen_dash = st.button("Generate Dashboard")
+    with st.sidebar:
+        gen_dash = st.button("Generate Dashboard")
 
 with col[0]:
     if gen_dash:
