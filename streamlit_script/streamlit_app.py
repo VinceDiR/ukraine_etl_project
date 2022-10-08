@@ -98,8 +98,8 @@ with col[0]:
             alt.Chart(df)
             .mark_circle()
             .encode(
-                x="latitude",
-                y="longitude",
+                longitude="latitude",
+                latitude="longitude",
                 size="fatalities",
                 color="event_type",
                 tooltip=[
