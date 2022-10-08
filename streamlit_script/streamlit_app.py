@@ -90,5 +90,5 @@ with col[0]:
             datetime.strftime(date_choice[0], '%Y-%m-%d'), datetime.strftime(date_choice[1], '%Y-%m-%d')
         )
         with st.expander("Show Raw DataFrame"):
-            st.write(df)
+            st.dataframe(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
