@@ -91,7 +91,7 @@ with col[0]:
             datetime.strftime(date_choice[0], "%Y-%m-%d"),
             datetime.strftime(date_choice[1], "%Y-%m-%d"),
         )
-        df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
+        df["event_date"] = df["event_date"].astype("datetime64[D]")
         with st.expander("Show Raw DataFrame"):
             st.dataframe(df)
         c = (
