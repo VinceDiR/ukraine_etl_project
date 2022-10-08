@@ -48,7 +48,7 @@ with st.sidebar:
             datetime(datetime.today() - timedelta(days=8)),
         ),
         datetime(2022, 2, 24),
-        datetime(datetime.today() - timedelta(days=8)),
+        (datetime.today() - timedelta(days=8)),
     )
     with st.sidebar:
         gen_dash = st.button("Generate Dashboard")
