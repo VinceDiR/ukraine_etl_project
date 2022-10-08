@@ -89,6 +89,7 @@ with col[0]:
         df = get_daily_data(
             datetime.strftime(date_choice[0], '%Y-%m-%d'), datetime.strftime(date_choice[1], '%Y-%m-%d')
         )
+        df.event_date.floor("D")
         with st.expander("Show Raw DataFrame"):
             st.dataframe(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
