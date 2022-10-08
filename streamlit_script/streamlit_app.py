@@ -44,11 +44,11 @@ with st.sidebar:
     date_choice = st.date_input(
         "Choose Start Date",
         (
-            datetime.date(2022, 2, 24),
-            datetime.date(datetime.today() - timedelta(days=8)),
+            datetime(2022, 2, 24),
+            datetime(datetime.today() - timedelta(days=8)),
         ),
-        datetime.date(2022, 2, 24),
-        datetime.date(datetime.today() - timedelta(days=8)),
+        datetime(2022, 2, 24),
+        datetime(datetime.today() - timedelta(days=8)),
     )
     with st.sidebar:
         gen_dash = st.button("Generate Dashboard")
