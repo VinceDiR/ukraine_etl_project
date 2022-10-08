@@ -2,7 +2,6 @@
 import os
 from datetime import datetime, timedelta
 from time import strftime
-from pandas import date_range
 import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
@@ -25,7 +24,7 @@ col = st.columns(1)
 
 
 @st.cache
-def get_daily_data(date):
+def get_daily_data(date1, date2):
     """Query Athena and return results as a Pandas dataframe"""
     athena = connect(
         s3_staging_dir=f"s3://{acled_bucket}/tmp/",
@@ -35,31 +34,30 @@ def get_daily_data(date):
         cursor_class=PandasCursor,
     ).cursor()
     return athena.execute(
-        f"""SELECT * FROM {acled_db}.{acled_table} WHERE event_date LIKE '{date}'"""
+        f"""select "actor1", "actor2", "admin1", "admin2", "admin3", "assoc_actor_1", "assoc_actor_2", "country", "data_id", "event_id_cnty", "event_id_no_cnty", "event_type", "fatalities", "geo_precision", "inter1", "inter2", "interaction", "iso", "iso3", "latitude", "location", "longitude", "notes", "region", "source", "source_scale", "sub_event_type", "time_precision", "upload_date", "year", from_iso8601_date(event_date) as event_date from "parquet" where event_date between {date1} and {date2} order by event_date;'"""
     ).as_pandas()
 
 
 st.sidebar.title("Filter by date")
 
 with st.sidebar:
-    date_choice = st.selectbox(
-        "Choose Date",
-        [
-            strftime("%Y-%m-%d", d.timetuple())
-            for d in date_range(
-                start="2022-02-24",
-                end=strftime(
-                    "%Y-%m-%d", (datetime.today() - timedelta(days=8)).timetuple()
-                ),
-            )
-        ],
+    date_choice = st.date_input(
+        "Choose Start Date",
+        (
+            datetime.date(2022, 2, 24),
+            datetime.date(datetime.today() - timedelta(days=8)),
+        ),
+        datetime.date(2022, 2, 24),
+        datetime.date(datetime.today() - timedelta(days=8)),
     )
     with st.sidebar:
         gen_dash = st.button("Generate Dashboard")
 
 with col[0]:
     if gen_dash:
-        df = get_daily_data(date_choice)
+        df = get_daily_data(
+            strftime(date_choice[0], "%Y-%m-%d"), strftime(date_choice[1], "%Y-%m-%d")
+        )
         with st.expander("Show Raw DataFrame"):
             st.write(df)
         st.map(data=df[["latitude", "longitude"]], zoom=5)
