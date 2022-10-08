@@ -1,7 +1,6 @@
 """Streamlit app to create ACLED data dashboards"""
 import os
 from datetime import datetime, timedelta
-from time import strftime
 import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
@@ -34,7 +33,39 @@ def get_daily_data(date1, date2):
         cursor_class=PandasCursor,
     ).cursor()
     return athena.execute(
-        f"""select "actor1", "actor2", "admin1", "admin2", "admin3", "assoc_actor_1", "assoc_actor_2", "country", "data_id", "event_id_cnty", "event_id_no_cnty", "event_type", "fatalities", "geo_precision", "inter1", "inter2", "interaction", "iso", "iso3", "latitude", "location", "longitude", "notes", "region", "source", "source_scale", "sub_event_type", "time_precision", "upload_date", "year", from_iso8601_date(event_date) as event_date from "parquet" where event_date between {date1} and {date2} order by event_date;'"""
+        f"""select
+        "actor1",
+        "actor2",
+        "admin1",
+        "admin2",
+        "admin3",
+        "assoc_actor_1",
+        "assoc_actor_2",
+        "country",
+        "data_id",
+        "event_id_cnty",
+        "event_id_no_cnty",
+        "event_type", "fatalities",
+        "geo_precision",
+        "inter1",
+        "inter2",
+        "interaction",
+        "iso", "iso3",
+        "latitude",
+        "location",
+        "longitude",
+        "notes",
+        "region",
+        "source",
+        "source_scale",
+        "sub_event_type",
+        "time_precision",
+        "upload_date",
+        "year",
+        from_iso8601_date(event_date) as event_date
+        from {acled_db}.{acled_table}
+        where event_date between '{date1}' and '{date2}'
+        order by event_date"""
     ).as_pandas()
 
 
@@ -56,7 +87,7 @@ with st.sidebar:
 with col[0]:
     if gen_dash:
         df = get_daily_data(
-            strftime(date_choice[0], '%Y-%m-%d'), strftime(date_choice[1], '%Y-%m-%d')
+            datetime.strftime(date_choice[0], '%Y-%m-%d'), datetime.strftime(date_choice[1], '%Y-%m-%d')
         )
         with st.expander("Show Raw DataFrame"):
             st.write(df)
