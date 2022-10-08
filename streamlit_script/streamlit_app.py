@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
+import altair as alt
 
 st.set_page_config(
     page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
@@ -87,9 +88,28 @@ with st.sidebar:
 with col[0]:
     if gen_dash:
         df = get_daily_data(
-            datetime.strftime(date_choice[0], '%Y-%m-%d'), datetime.strftime(date_choice[1], '%Y-%m-%d')
+            datetime.strftime(date_choice[0], "%Y-%m-%d"),
+            datetime.strftime(date_choice[1], "%Y-%m-%d"),
         )
         df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
         with st.expander("Show Raw DataFrame"):
             st.dataframe(df)
-        st.map(data=df[["latitude", "longitude"]], zoom=5)
+        c = (
+            alt.Chart(df)
+            .mark_circle()
+            .encode(
+                x="latitude",
+                y="longitude",
+                size="fatalities",
+                color="event_type",
+                tooltip=[
+                    "notes",
+                    "event_date",
+                    "fatalities",
+                    "event_type",
+                    "actor1",
+                    "actor2",
+                ],
+            )
+        )
+        st.altair_chart(c, use_container_width=True)
