@@ -38,7 +38,7 @@ def get_daily_data(date1, date2):
     ).as_pandas()
 
 
-st.sidebar.title("Filter by date")
+st.sidebar.title("Select Date Range")
 
 with st.sidebar:
     date_choice = st.date_input(
@@ -56,7 +56,7 @@ with st.sidebar:
 with col[0]:
     if gen_dash:
         df = get_daily_data(
-            strftime(date_choice[0], "%Y-%m-%d"), strftime(date_choice[1], "%Y-%m-%d")
+            strftime(date_choice[0], '%Y-%m-%d'), strftime(date_choice[1], '%Y-%m-%d')
         )
         with st.expander("Show Raw DataFrame"):
             st.write(df)
