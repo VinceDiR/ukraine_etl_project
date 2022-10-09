@@ -120,6 +120,7 @@ if gen_dash:
     fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Fatalities: %{customdata[5]}")
     st.plotly_chart(fig, use_container_width=True)
 
-col1, col2, col3, col5 = st.columns(4)
-with col1:
-    st.metric("Total Events", len(df['data_id'].unique()))
+    col1, col2, col3, col5 = st.columns(4)
+
+    with col1:
+        st.metric("Total Events", len(df['data_id'].unique()))
