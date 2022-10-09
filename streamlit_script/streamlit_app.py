@@ -91,8 +91,8 @@ with col[0]:
             datetime.strftime(date_choice[0], "%Y-%m-%d"),
             datetime.strftime(date_choice[1], "%Y-%m-%d"),
         )
-        df["event_date"] = df["event_date"].astype("datetime64[D]")
-        df["upload_date"] = df["upload_date"].astype("datetime64[D]")
+        df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
+        df["upload_date"] = df["upload_date"].dt.strftime("%Y-%m-%d")
 
         with st.expander("Show Raw DataFrame"):
             st.write(df)
@@ -101,14 +101,16 @@ with col[0]:
             lat="latitude",
             lon="longitude",
             hover_name="data_id",
-            hover_data=[
-                "actor1",
-                "actor2",
-                "event_date",
-                "event_type",
-                "notes",
-                "fatalities",
-            ],
+            hover_data={
+                "actor1": True,
+                "actor2": True,
+                "event_date": True,
+                "event_type": True,
+                "notes": True,
+                "fatalities": True,
+                "latitude": False,
+                "longitude": False,
+            },
             color="event_type",
             size=df["fatalities"].to_list(),
             animation_frame="event_date",
