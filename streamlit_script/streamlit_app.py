@@ -116,7 +116,7 @@ with col[0]:
             animation_frame="event_date",
             mapbox_style="carto-positron",
             zoom=4,
-            height=300,
+            height=1000,
         )
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
         st.plotly_chart(fig, use_container_width=True)
