@@ -136,4 +136,4 @@ if gen_dash:
     with col6:
         st.metric("Total Instances of Violence Against Civilians", len(df[df['event_type'] == 'Violence against civilians']))
 
-    st.plotly_chart(px.bar(df, x="event_date", y="fatalities", color="event_type", barmode="group", height=1000), use_container_width=True)
+    st.plotly_chart(px.bar(df, x="event_date", y="fatalities", color="event_type", height=1000), use_container_width=True)
