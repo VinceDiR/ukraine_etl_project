@@ -27,3 +27,5 @@ The data we will be using for this project is the [ACLED Conflict Data](https://
 - **PyAthena** for querying the Athena table in Python.
 
 - **Streamlit** for building a frontend application.
+
+- **Plotly** for visualizing the data in the frontend application.
