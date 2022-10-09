@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
-import altair as alt
+import plotly.express as px
 
 st.set_page_config(
     page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
@@ -92,24 +92,10 @@ with col[0]:
             datetime.strftime(date_choice[1], "%Y-%m-%d"),
         )
         df["event_date"] = df["event_date"].astype("datetime64[D]")
+        df['upload_date'] = df['upload_date'].astype('datetime64[D]')
+        
         with st.expander("Show Raw DataFrame"):
-            st.dataframe(df)
-        c = (
-            alt.Chart(df)
-            .mark_circle()
-            .encode(
-                longitude="latitude",
-                latitude="longitude",
-                size="fatalities",
-                color="event_type",
-                tooltip=[
-                    "notes",
-                    "event_date",
-                    "fatalities",
-                    "event_type",
-                    "actor1",
-                    "actor2",
-                ],
-            )
-        )
-        st.altair_chart(c, use_container_width=True)
+            st.write(df)
+            fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name="data_id", hover_data=["actor1", "actor2", "event_date", "event_type", "notes", "fatalities"], color="event_type", size=df["fatalities"], mapbox_style="carto-positron", zoom=4, height=300)
+            fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+            st.plotly_chart(fig, use_container_width=True)
