@@ -116,7 +116,7 @@ with col[0]:
             color="event_type",
             size=df["fatalities"].to_list(),
             mapbox_style="carto-positron",
-            zoom=4,
+            zoom=6,
             height=1000,
         )
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
