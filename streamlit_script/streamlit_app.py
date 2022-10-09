@@ -121,5 +121,5 @@ if gen_dash:
     st.plotly_chart(fig, use_container_width=True)
 
 col1, col2, col3, col5 = st.columns(4)
-
-col1.metric("Total Events", len(df['data_id'].unique()))
+with col1:
+    st.metric("Total Events", len(df['data_id'].unique()))
