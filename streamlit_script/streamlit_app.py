@@ -120,7 +120,17 @@ if gen_dash:
     fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Fatalities: %{customdata[5]}")
     st.plotly_chart(fig, use_container_width=True)
 
-    col1, col2, col3, col5 = st.columns(4)
+    col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     with col1:
+        st.metric("Total Days", len(df['event_date'].unique()))
+    with col2:
         st.metric("Total Events", len(df['data_id'].unique()))
+    with col3:
+        st.metric("Total Fatalities", df['fatalities'].sum())
+    with col4:
+        st.metric("Total Battles", len(df[df['event_type'] == 'Battles']))
+    with col5:
+        st.metric("Total Explosions/Remote violence", len(df[df['event_type'] == 'Explosions/Remote violence']))
+    with col6:
+        st.metric("Total Instances of Violence Against Civilians", len(df[df['event_type'] == 'Violence against civilians']))
