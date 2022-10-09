@@ -69,8 +69,8 @@ def get_daily_data(date1, date2):
         where event_date between '{date1}' and '{date2}'
         order by event_date"""
     ).as_pandas()
-    df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
-    df["upload_date"] = df["upload_date"].dt.strftime("%Y-%m-%d")
+    athena_df["event_date"] = athena_df["event_date"].dt.strftime("%Y-%m-%d")
+    athena_df["upload_date"] = athena_df["upload_date"].dt.strftime("%Y-%m-%d")
     return athena_df
 
 
