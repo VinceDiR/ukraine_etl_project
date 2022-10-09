@@ -110,8 +110,6 @@ with col[0]:
                 "fatalities": True,
                 "latitude": False,
                 "longitude": False,
-                "size": False,
-                
             },
             color="event_type",
             size=df["fatalities"].to_list(),
@@ -120,4 +118,5 @@ with col[0]:
             height=1000,
         )
         fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Fatalities: %{customdata[5]}")
         st.plotly_chart(fig, use_container_width=True)
