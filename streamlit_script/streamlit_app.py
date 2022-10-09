@@ -110,6 +110,8 @@ with col[0]:
                 "fatalities": True,
                 "latitude": False,
                 "longitude": False,
+                "size": False,
+                
             },
             color="event_type",
             size=df["fatalities"].to_list(),
