@@ -111,7 +111,7 @@ if gen_dash:
             "longitude": False,
         },
         color="event_type",
-        size=df["fatalities"].to_list(),
+        size=(df['fatalities'] + 10).to_list(),
         mapbox_style="carto-positron",
         zoom=6,
         height=1000,
