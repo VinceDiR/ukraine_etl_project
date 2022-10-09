@@ -111,6 +111,7 @@ with col[0]:
             ],
             color="event_type",
             size=df["fatalities"].to_list(),
+            animation_frame="event_date",
             mapbox_style="carto-positron",
             zoom=4,
             height=300,
