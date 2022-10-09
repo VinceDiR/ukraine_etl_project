@@ -6,10 +6,6 @@ from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
 import plotly.express as px
 
-st.set_page_config(
-    page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
-)
-
 acled_bucket = os.getenv("S3_BUCKET")
 acled_db = os.getenv("DATABASE")
 acled_table = os.getenv("TABLE")
@@ -27,8 +23,9 @@ athena = connect(
 ).cursor()
 
 st.title(":flag-ua: Tracking the Conflict in Ukraine")
-
-col = st.columns(1)
+st.set_page_config(
+    page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
+)
 
 
 @st.cache
@@ -86,39 +83,43 @@ with st.sidebar:
         datetime(2022, 2, 24),
         (datetime.today() - timedelta(days=8)),
     )
-    with st.sidebar:
-        gen_dash = st.button("Generate Data and Map")
 
-with col[0]:
-    if gen_dash:
-        df = get_daily_data(
-            datetime.strftime(date_choice[0], "%Y-%m-%d"),
-            datetime.strftime(date_choice[1], "%Y-%m-%d"),
-        )
+    gen_dash = st.button("Generate Data and Map")
 
-        with st.expander("Show Raw DataFrame"):
-            st.write(df)
-        fig = px.scatter_mapbox(
-            df,
-            lat="latitude",
-            lon="longitude",
-            hover_name="data_id",
-            hover_data={
-                "actor1": True,
-                "actor2": True,
-                "event_date": True,
-                "event_type": True,
-                "notes": True,
-                "fatalities": True,
-                "latitude": False,
-                "longitude": False,
-            },
-            color="event_type",
-            size=df["fatalities"].to_list(),
-            mapbox_style="carto-positron",
-            zoom=6,
-            height=1000,
-        )
-        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-        fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Fatalities: %{customdata[5]}")
-        st.plotly_chart(fig, use_container_width=True)
+
+if gen_dash:
+    df = get_daily_data(
+        datetime.strftime(date_choice[0], "%Y-%m-%d"),
+        datetime.strftime(date_choice[1], "%Y-%m-%d"),
+    )
+
+    with st.expander("Show Raw DataFrame"):
+        st.write(df)
+    fig = px.scatter_mapbox(
+        df,
+        lat="latitude",
+        lon="longitude",
+        hover_name="data_id",
+        hover_data={
+            "actor1": True,
+            "actor2": True,
+            "event_date": True,
+            "event_type": True,
+            "notes": True,
+            "fatalities": True,
+            "latitude": False,
+            "longitude": False,
+        },
+        color="event_type",
+        size=df["fatalities"].to_list(),
+        mapbox_style="carto-positron",
+        zoom=6,
+        height=1000,
+    )
+    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Fatalities: %{customdata[5]}")
+    st.plotly_chart(fig, use_container_width=True)
+
+col1, col2, col3, col5 = st.columns(4)
+
+col1.metric("Total Events", len(df['data_id'].unique()))
