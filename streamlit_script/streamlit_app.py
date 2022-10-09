@@ -96,24 +96,24 @@ with col[0]:
 
         with st.expander("Show Raw DataFrame"):
             st.write(df)
-            fig = px.scatter_mapbox(
-                df,
-                lat="latitude",
-                lon="longitude",
-                hover_name="data_id",
-                hover_data=[
-                    "actor1",
-                    "actor2",
-                    "event_date",
-                    "event_type",
-                    "notes",
-                    "fatalities",
-                ],
-                color="event_type",
-                size=df["fatalities"],
-                mapbox_style="carto-positron",
-                zoom=4,
-                height=300,
-            )
-            fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-            st.plotly_chart(fig, use_container_width=True)
+        fig = px.scatter_mapbox(
+            df,
+            lat="latitude",
+            lon="longitude",
+            hover_name="data_id",
+            hover_data=[
+                "actor1",
+                "actor2",
+                "event_date",
+                "event_type",
+                "notes",
+                "fatalities",
+            ],
+            color="event_type",
+            size=df["fatalities"],
+            mapbox_style="carto-positron",
+            zoom=4,
+            height=300,
+        )
+        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        st.plotly_chart(fig, use_container_width=True)
