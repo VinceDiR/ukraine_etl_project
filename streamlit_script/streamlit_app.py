@@ -25,7 +25,7 @@ athena = connect(
 st.set_page_config(
     page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
 )
-st.title(":flag-ua: Tracking the Conflict in Ukraine")
+st.title("Tracking the Conflict in Ukraine :flag-ua:")
 
 
 @st.cache
