@@ -18,6 +18,14 @@ aws_region = os.getenv("AWS_REGION")
 aws_access_key = os.getenv("AWS_ACCESS_KEY")
 aws_secret_key = os.getenv("AWS_SECRET_KEY")
 
+athena = connect(
+    s3_staging_dir=f"s3://{acled_bucket}/tmp/",
+    region_name=f"{aws_region}",
+    aws_access_key_id=f"{aws_access_key}",
+    aws_secret_access_key=f"{aws_secret_key}",
+    cursor_class=PandasCursor,
+).cursor()
+
 st.title(":flag-ua: Tracking the Conflict in Ukraine")
 
 col = st.columns(1)
@@ -26,14 +34,7 @@ col = st.columns(1)
 @st.cache
 def get_daily_data(date1, date2):
     """Query Athena and return results as a Pandas dataframe"""
-    athena = connect(
-        s3_staging_dir=f"s3://{acled_bucket}/tmp/",
-        region_name=f"{aws_region}",
-        aws_access_key_id=f"{aws_access_key}",
-        aws_secret_access_key=f"{aws_secret_key}",
-        cursor_class=PandasCursor,
-    ).cursor()
-    return athena.execute(
+    athena_df =  athena.execute(
         f"""select
         "actor1",
         "actor2",
@@ -63,11 +64,14 @@ def get_daily_data(date1, date2):
         "time_precision",
         "upload_date",
         "year",
-        from_iso8601_date(event_date) as event_date
+        date(event_date) as event_date
         from {acled_db}.{acled_table}
         where event_date between '{date1}' and '{date2}'
         order by event_date"""
     ).as_pandas()
+    df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
+    df["upload_date"] = df["upload_date"].dt.strftime("%Y-%m-%d")
+    return athena_df
 
 
 st.sidebar.title("Select Date Range")
@@ -91,8 +95,6 @@ with col[0]:
             datetime.strftime(date_choice[0], "%Y-%m-%d"),
             datetime.strftime(date_choice[1], "%Y-%m-%d"),
         )
-        df["event_date"] = df["event_date"].dt.strftime("%Y-%m-%d")
-        df["upload_date"] = df["upload_date"].dt.strftime("%Y-%m-%d")
 
         with st.expander("Show Raw DataFrame"):
             st.write(df)
