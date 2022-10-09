@@ -129,8 +129,8 @@ if gen_dash:
     with col3:
         st.metric("Total Fatalities", df['fatalities'].sum())
     with col4:
-        st.metric("Total Battles", len(df[df['event_type'] == 'Battles']))
-    with col5:
         st.metric("Total Explosions/Remote violence", len(df[df['event_type'] == 'Explosions/Remote violence']))
+    with col5:
+        st.metric("Total Battles", len(df[df['event_type'] == 'Battles']))
     with col6:
         st.metric("Total Instances of Violence Against Civilians", len(df[df['event_type'] == 'Violence against civilians']))
