@@ -110,7 +110,7 @@ with col[0]:
                 "fatalities",
             ],
             color="event_type",
-            size=df["fatalities"],
+            size=df["fatalities"].to_list(),
             mapbox_style="carto-positron",
             zoom=4,
             height=300,
