@@ -26,7 +26,7 @@ st.set_page_config(
     page_title="Ukraine War Dashboard", page_icon=":flag-ua:", layout="wide"
 )
 st.title("Tracking the Conflict in Ukraine :flag-ua:")
-
+st.subheader("Data last updated: " + (datetime.today() - timedelta(days=11)).strftime("%d %B, %Y"))
 
 @st.cache
 def get_daily_data(date1, date2):
