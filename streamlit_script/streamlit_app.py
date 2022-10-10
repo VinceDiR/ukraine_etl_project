@@ -78,10 +78,10 @@ with st.sidebar:
         "Choose Start Date",
         (
             datetime(2022, 2, 24),
-            (datetime.today() - timedelta(days=10)),
+            (datetime.today() - timedelta(days=11)),
         ),
         datetime(2022, 2, 24),
-        (datetime.today() - timedelta(days=10)),
+        (datetime.today() - timedelta(days=11)),
     )
 
     gen_dash = st.button("Generate Data and Map")
