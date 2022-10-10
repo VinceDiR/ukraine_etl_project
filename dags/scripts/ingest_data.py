@@ -26,7 +26,7 @@ def ingest_data(date):
     spark = SparkSession.builder.config(conf=conf).getOrCreate()
     dataframe = spark.createDataFrame([], StructType([]))
 
-    response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={strftime("%Y-%m-%d", (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=7)).timetuple())}=&iso=804""", timeout=30)
+    response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={strftime("%Y-%m-%d", (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=10)).timetuple())}=&iso=804""", timeout=30)
     data = response.json()['data']
     dataframe2 = spark.read.json(spark.sparkContext.parallelize([data]))
     dataframe = dataframe.unionByName(dataframe2, True)

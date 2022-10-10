@@ -11,7 +11,7 @@ email = os.getenv("EMAIL_ADDRESS")
 
 with DAG(
     dag_id="acled_data_ingest",
-    start_date=datetime(2022, 9, 30),
+    start_date=datetime(2022, 10, 10),
     schedule_interval="@daily",
     catchup=True,
     default_args={
