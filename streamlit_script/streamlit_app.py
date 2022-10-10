@@ -136,4 +136,32 @@ if gen_dash:
     with col6:
         st.metric("Total Instances of Violence Against Civilians", len(df[df['event_type'] == 'Violence against civilians']))
 
+    with st.expander("Show Timelapse Visualization"):
+        fig = px.scatter_mapbox(
+            df,
+            lat="latitude",
+            lon="longitude",
+            hover_name="data_id",
+            hover_data={
+                "actor1": True,
+                "actor2": True,
+                "event_date": True,
+                "event_type": True,
+                "notes": True,
+                "source": True,
+                "fatalities": True,
+                "latitude": False,
+                "longitude": False,
+            },
+            color="event_type",
+            size=(df['fatalities'] + 10).to_list(),
+            animation_frame="event_date",
+            mapbox_style="carto-positron",
+            zoom=6,
+            height=1000,
+        )
+        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Source: %{customdata[5]}<br>Fatalities: %{customdata[6]}")
+        st.plotly_chart(fig, use_container_width=True)
+
     st.plotly_chart(px.bar(df, x="event_date", y="fatalities", color="event_type", height=1000), use_container_width=True)
