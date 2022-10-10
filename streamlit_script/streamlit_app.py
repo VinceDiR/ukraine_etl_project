@@ -31,7 +31,7 @@ st.title("Tracking the Conflict in Ukraine :flag-ua:")
 @st.cache
 def get_daily_data(date1, date2):
     """Query Athena and return results as a Pandas dataframe"""
-    athena_df =  athena.execute(
+    athena_df = athena.execute(
         f"""select
         "actor1",
         "actor2",
@@ -95,7 +95,7 @@ if gen_dash:
 
     with st.expander("Show Raw DataFrame"):
         st.write(df)
-    fig = px.scatter_mapbox(
+    fig1 = px.scatter_mapbox(
         df,
         lat="latitude",
         lon="longitude",
@@ -112,32 +112,40 @@ if gen_dash:
             "longitude": False,
         },
         color="event_type",
-        size=(df['fatalities'] + 10).to_list(),
+        size=(df["fatalities"] + 10).to_list(),
         mapbox_style="carto-positron",
         zoom=6,
         height=1000,
     )
-    fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-    fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Source: %{customdata[5]}<br>Fatalities: %{customdata[6]}")
-    st.plotly_chart(fig, use_container_width=True)
+    fig1.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fig1.update_traces(
+        hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Source: %{customdata[5]}<br>Fatalities: %{customdata[6]}"
+    )
+    st.plotly_chart(fig1, use_container_width=True)
 
     col1, col2, col3, col4, col5, col6 = st.columns(6)
 
     with col1:
-        st.metric("Total Days", len(df['event_date'].unique()))
+        st.metric("Total Days", len(df["event_date"].unique()))
     with col2:
-        st.metric("Total Events", len(df['data_id'].unique()))
+        st.metric("Total Events", len(df["data_id"].unique()))
     with col3:
-        st.metric("Total Reported Fatalities", df['fatalities'].sum())
+        st.metric("Total Reported Fatalities", df["fatalities"].sum())
     with col4:
-        st.metric("Total Explosions/Remote violence", len(df[df['event_type'] == 'Explosions/Remote violence']))
+        st.metric(
+            "Total Explosions/Remote violence",
+            len(df[df["event_type"] == "Explosions/Remote violence"]),
+        )
     with col5:
-        st.metric("Total Battles", len(df[df['event_type'] == 'Battles']))
+        st.metric("Total Battles", len(df[df["event_type"] == "Battles"]))
     with col6:
-        st.metric("Total Instances of Violence Against Civilians", len(df[df['event_type'] == 'Violence against civilians']))
+        st.metric(
+            "Total Instances of Violence Against Civilians",
+            len(df[df["event_type"] == "Violence against civilians"]),
+        )
 
     with st.expander("Show Timelapse Visualization"):
-        fig = px.scatter_mapbox(
+        fig2 = px.scatter_mapbox(
             df,
             lat="latitude",
             lon="longitude",
@@ -154,14 +162,52 @@ if gen_dash:
                 "longitude": False,
             },
             color="event_type",
-            size=(df['fatalities'] + 10).to_list(),
+            size=(df["fatalities"] + 10).to_list(),
             animation_frame="event_date",
             mapbox_style="carto-positron",
             zoom=6,
             height=1000,
         )
-        fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
-        fig.update_traces(hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Source: %{customdata[5]}<br>Fatalities: %{customdata[6]}")
-        st.plotly_chart(fig, use_container_width=True)
+        fig2.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+        fig2.update_traces(
+            hovertemplate="<b>%{hovertext}</b><br><br>Actor 1: %{customdata[0]}<br>Actor 2: %{customdata[1]}<br>Event Date: %{customdata[2]}<br>Event Type: %{customdata[3]}<br>Notes: %{customdata[4]}<br>Source: %{customdata[5]}<br>Fatalities: %{customdata[6]}"
+        )
+        st.plotly_chart(fig2, use_container_width=True)
 
-    st.plotly_chart(px.bar(df, x="event_date", y="fatalities", color="event_type", height=1000), use_container_width=True)
+    st.plotly_chart(
+        px.bar(
+            df,
+            x="event_date",
+            y="fatalities",
+            color="event_type",
+            height=1000,
+            title="Daily Reported Fatalities by Event Type",
+        ),
+        use_container_width=True,
+    )
+
+    fig3 = px.bar(
+        df,
+        x=df.event_date.unique(),
+        y=[
+            df[df.actor1.str.contains("Russia")]
+            .groupby("event_date")["data_id"]
+            .count(),
+            df[df.actor1.str.contains("Ukraine")]
+            .groupby("event_date")["data_id"]
+            .count(),
+        ],
+        barmode="group",
+        hover_name=df.event_date.unique(),
+        height=500,
+        title="Number of Events Initiated by Russian and Ukrainian Forces per Date",
+    )
+newnames = {"wide_variable_0": "Russia", "wide_variable_1": "Ukraine"}
+fig3.for_each_trace(
+    lambda t: t.update(
+        name=newnames[t.name],
+        legendgroup=newnames[t.name],
+        hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name]),
+    )
+)
+st.plotly_chart(fig3, use_container_width=True)
