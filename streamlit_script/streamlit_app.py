@@ -202,12 +202,12 @@ if gen_dash:
         height=500,
         title="Number of Events Initiated by Russian and Ukrainian Forces per Date",
     )
-newnames = {"wide_variable_0": "Russia", "wide_variable_1": "Ukraine"}
-fig3.for_each_trace(
-    lambda t: t.update(
-        name=newnames[t.name],
-        legendgroup=newnames[t.name],
-        hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name]),
+    newnames = {"wide_variable_0": "Russia", "wide_variable_1": "Ukraine"}
+    fig3.for_each_trace(
+        lambda t: t.update(
+            name=newnames[t.name],
+            legendgroup=newnames[t.name],
+            hovertemplate=t.hovertemplate.replace(t.name, newnames[t.name]),
+        )
     )
-)
-st.plotly_chart(fig3, use_container_width=True)
+    st.plotly_chart(fig3, use_container_width=True)
