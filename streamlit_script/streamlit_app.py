@@ -84,7 +84,7 @@ with st.sidebar:
         (datetime.today() - timedelta(days=11)),
     )
 
-    gen_dash = st.button("Generate Data and Map")
+    gen_dash = st.button("Generate Dashboard")
 
 
 if gen_dash:
