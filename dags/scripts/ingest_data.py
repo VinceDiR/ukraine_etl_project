@@ -2,11 +2,12 @@
 import os
 from datetime import datetime, timedelta
 from time import strftime
-from pyspark.sql import SparkSession
+
+import requests
 from pyspark import SparkConf
+from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import StructType
-import requests
 
 
 def ingest_data(date):
@@ -32,7 +33,7 @@ def ingest_data(date):
     dataframe = dataframe.unionByName(dataframe2, True)
     if dataframe.count() == 0:
         return "No data"
-    elif dataframe.count() == 500:
+    if dataframe.count() == 500:
         print("Max data limit reached. Calling API again.")
         response = requests.get(f"""https://api.acleddata.com/acled/read?key={api_key}&email={username}&event_date={strftime("%Y-%m-%d", (datetime.strptime(date, "%Y-%m-%d") - timedelta(days=7)).timetuple())}=&iso=804&page=2""", timeout=30)
         data = response.json()['data']
