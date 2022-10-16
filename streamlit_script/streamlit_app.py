@@ -1,10 +1,11 @@
 """Streamlit app to create ACLED data dashboards"""
 import os
 from datetime import datetime, timedelta
+
+import plotly.express as px
 import streamlit as st
 from pyathena import connect
 from pyathena.pandas.cursor import PandasCursor
-import plotly.express as px
 
 acled_bucket = os.getenv("S3_BUCKET")
 acled_db = os.getenv("DATABASE")
