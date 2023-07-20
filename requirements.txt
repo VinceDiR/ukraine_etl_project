@@ -1,4 +1,4 @@
-apache-airflow==2.6.0
+apache-airflow==2.6.3
 apache-airflow-providers-amazon==7.2.1
 plotly==5.10.0
 pyathena==2.14.0
