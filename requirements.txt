@@ -3,6 +3,6 @@ apache-airflow-providers-amazon==7.2.1
 plotly==5.10.0
 pyathena==2.14.0
 pyspark==3.3.0
-requests==2.31.0
+requests==2.32.0
 streamlit==1.30.0
 s3fs==2022.8.2
