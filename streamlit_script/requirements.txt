@@ -1,4 +1,4 @@
 plotly==5.10.0
 pyathena==2.14.0
-streamlit==1.30.0
+streamlit==1.37.0
 s3fs==2022.8.2
